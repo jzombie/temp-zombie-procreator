@@ -1,0 +1,30 @@
+{
+  "name": "open-fs",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "npm run test-node && npm run test-browser",
+    "test-node": "tape test/*.test.js",
+    "test-browser": "dotenv airtap --coverage --concurrency 1 -- test/*.test.js",
+    "lint": "prettier --write '(**/)*.js'",
+    "// coverage": "nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm run test-node"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "phantom-core": "github:zenosmosis/phantom-core",
+    "sync-object": "github:zenosmosis/sync-object",
+    "valid-filename": "^3.1.0"
+  },
+  "devDependencies": {
+    "airtap": "^4.0.3",
+    "airtap-sauce": "^1.1.2",
+    "dotenv-cli": "^4.0.0",
+    "nyc": "^15.1.0",
+    "prettier": "^2.3.2",
+    "tape": "^5.3.0",
+    "tape-async": "^2.3.0"
+  }
+}
