@@ -32,4 +32,29 @@ test("OpenFSUser constructor", (t) => {
   t.end();
 });
 
-// TODO: Test export / import structure
+test("OpenFSUser structure export / import", (t) => {
+  t.plan(3);
+
+  const username = "test";
+  const userId = "test-id";
+
+  const user = new OpenFSUser({
+    username,
+    userId,
+  });
+
+  const structure = user.getStructure();
+
+  let newUser = null;
+
+  t.doesNotThrow(() => {
+    newUser = OpenFSUser.createFromStructure(structure);
+
+    OpenFSUser.validateUser(newUser);
+  }, "new user is created from structure");
+
+  t.equals(newUser.getUsername(), username, "imported username matches");
+  t.equals(newUser.getUserId(), userId, "imported userId matches");
+
+  t.end();
+});
