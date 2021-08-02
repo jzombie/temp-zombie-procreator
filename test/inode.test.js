@@ -1,10 +1,19 @@
 const test = require("tape-async");
 const { OpenFSInode, OpenFSUser } = require("../src");
 
-const { INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL } = OpenFSInode;
+const { INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL, EVT_UPDATED } =
+  OpenFSInode;
 
 test("OpenFSInode constructor", (t) => {
-  t.plan(4);
+  t.plan(5);
+
+  t.throws(
+    () => {
+      OpenFSInode.validateInode({});
+    },
+    TypeError,
+    "determines invalid inode"
+  );
 
   t.throws(
     () => new OpenFSInode(),
@@ -46,9 +55,9 @@ test("OpenFSInode constructor", (t) => {
 });
 
 test("inode types", (t) => {
-  const types = [INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL];
+  t.plan(7);
 
-  t.plan(types.length * 2);
+  const types = [INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL];
 
   const checkedInodeTypes = [];
 
@@ -66,15 +75,23 @@ test("inode types", (t) => {
     checkedInodeTypes.push(inodeType);
   });
 
+  t.throws(
+    () => {
+      OpenFSInode.validateType("invalid-inode-type");
+    },
+    TypeError,
+    "throws TypeError when validating invalid type"
+  );
+
   t.end();
 });
 
 // NOTE: Just performing basic tests here as this is mostly handled by a third-
 // party library with its own included tests
-test("node name", (t) => {
-  const validFileNames = ["foo!bar", "hello....world", "test"];
+test("node name", async (t) => {
+  t.plan(9);
 
-  t.plan(validFileNames.length + 3);
+  const validFileNames = ["foo!bar", "hello....world", "test"];
 
   validFileNames.forEach((fileName) => {
     t.doesNotThrow(
@@ -100,6 +117,31 @@ test("node name", (t) => {
     ReferenceError,
     "node name with forward slash (/) throws ReferenceError"
   );
+
+  const inode = new OpenFSInode({
+    owner: new OpenFSUser({ username: "anon", userId: "test-123" }),
+    type: INODE_TYPE_URL,
+    name: "test-url",
+  });
+
+  t.throws(
+    () => inode.setName("s\1"),
+    ReferenceError,
+    "throws when setting invalid name to existing inode"
+  );
+
+  t.doesNotThrow(async () => {
+    await Promise.all([
+      new Promise((resolve) => {
+        inode.once(EVT_UPDATED, () => {
+          resolve();
+        });
+      }),
+      inode.setName("new-name"),
+    ]);
+  }, "does not throw when setting new name");
+
+  t.equals(inode.getName(), "new-name", "inode obtains new name");
 
   t.end();
 });
