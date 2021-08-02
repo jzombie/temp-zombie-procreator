@@ -31,7 +31,7 @@ const HOME_DIR_PARENT_NAME = "home";
 class OpenFSCore extends PhantomCore {
   /**
    * @param {Object} structure
-   * @throw {Error}
+   * @throws {Error}
    * @return {OpenFSCore}
    */
   static createFromStructure(structure) {

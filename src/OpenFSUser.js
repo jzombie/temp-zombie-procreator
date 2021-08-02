@@ -15,7 +15,7 @@ class OpenFSUser extends PhantomCore {
    * Validates if the supplied user is a valid OpenFSUser instance.
    *
    * @param {OpenFSUser} user
-   * @throw {TypeError}
+   * @throws {TypeError}
    * @return {void}
    */
   static validateUser(user) {
@@ -26,7 +26,7 @@ class OpenFSUser extends PhantomCore {
 
   /**
    * @param {string} username
-   * @throw {TypeError}
+   * @throws {TypeError}
    * @return {void}
    */
   static validateUsername(username) {
@@ -39,7 +39,7 @@ class OpenFSUser extends PhantomCore {
 
   /**
    * @param {string} userId
-   * @throw {TypeError}
+   * @throws {TypeError}
    * @return {void}
    */
   static validateUserId(userId) {
@@ -52,7 +52,7 @@ class OpenFSUser extends PhantomCore {
 
   /**
    * @param {Object} userStructure
-   * @throw {Error}
+   * @throws {Error}
    * @return {OpenFSUser}
    */
   static createFromStructure(userStructure) {

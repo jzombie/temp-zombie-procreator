@@ -37,7 +37,7 @@ class OpenFSInode extends PhantomCore {
    * Validates if the supplied inode is a valid OpenFSInode instance.
    *
    * @param {OpenFSInode} inode
-   * @throw {TypeError}
+   * @throws {TypeError}
    * @return {void}
    */
   static validateInode(inode) {
@@ -50,7 +50,7 @@ class OpenFSInode extends PhantomCore {
    * Ensures the given inodeType is valid.
    *
    * @param {string} inodeType
-   * @throw {TypeError} Throws if not a valid inode type which this class
+   * @throws {TypeError} Throws if not a valid inode type which this class
    * recognizes.
    * @return {void}
    */
@@ -80,6 +80,7 @@ class OpenFSInode extends PhantomCore {
    * Creates an OpenFSInode from the given object.
    *
    * @param {Object} structure
+   * @throws {Error}
    * @return {OpenFSInode}
    */
   static createFromStructure(structure) {
@@ -104,7 +105,7 @@ class OpenFSInode extends PhantomCore {
   }
 
   /**
-   * Returns the inode and all related meta-data regarding it.
+   * Returns the structure of the inode and all related metadata regarding it.
    *
    * @return {Object} // TODO: Document structure
    */
@@ -115,6 +116,7 @@ class OpenFSInode extends PhantomCore {
       [this._name]: {
         __meta__: {
           type: this.getType(),
+          // TODO: Handle additional metadata
           // ...
         },
         ...this._children,
@@ -131,6 +133,12 @@ class OpenFSInode extends PhantomCore {
     const { __meta__: metaData } = this.getStructure();
 
     return metaData;
+  }
+  */
+
+  /*
+  getSize(isRecursive = true) {
+    // TODO: Build
   }
   */
 
