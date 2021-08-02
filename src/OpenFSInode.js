@@ -112,16 +112,37 @@ class OpenFSInode extends PhantomCore {
   getStructure() {
     // TODO: Build
 
-    return {
+    const structure = {
       [this._name]: {
         __meta__: {
+          owner: this._owner.getStructure(),
           type: this.getType(),
           // TODO: Handle additional metadata
-          // ...
+          // createDate
+          // modifyDate
+          // lastReadDate
+          // readBy (...OpenFSUser)?
         },
-        ...this._children,
       },
     };
+
+    if (this._type === INODE_TYPE_DIRECTORY) {
+      structure[this._name].__children__ = {};
+
+      for (const [childName, childInode] of Object.entries(this._children)) {
+        structure[this._name].__children__[childName] =
+          childInode.getStructure();
+      }
+    }
+
+    return structure;
+  }
+
+  /**
+   * @return {Object}
+   */
+  getChildren() {
+    return this._children;
   }
 
   // TODO: Document
@@ -167,6 +188,11 @@ class OpenFSInode extends PhantomCore {
   getName() {
     return this._name;
   }
+
+  /*
+  getPath() {
+  }
+  */
 
   /**
    * @return {OpenFSUser}

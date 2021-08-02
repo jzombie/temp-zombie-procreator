@@ -46,6 +46,41 @@ test("OpenFSInode constructor", (t) => {
 });
 
 // TODO: Test export / import structure
+test("OpenFSInode export / import directory structure", (t) => {
+  // TODO: Complete
+
+  // TODO: Add plan
+  // t.plan(?)
+
+  const owner = new OpenFSUser({ username: "anon", userId: "test-123" });
+
+  const dirInode = new OpenFSInode({
+    owner,
+    type: INODE_TYPE_DIRECTORY,
+    name: "test-directory",
+  });
+
+  const childDirInode = new OpenFSInode({
+    owner,
+    type: INODE_TYPE_DIRECTORY,
+    name: "test-child-directory",
+  });
+
+  dirInode.addChildInode(childDirInode);
+
+  t.equals(
+    typeof dirInode.getStructure(),
+    "object",
+    "getStructure is an object"
+  );
+
+  // TODO: Remove
+  console.log({
+    structure: dirInode.getStructure(),
+  });
+
+  t.end();
+});
 
 test("inode types", (t) => {
   const types = [INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL];
