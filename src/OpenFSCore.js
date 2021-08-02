@@ -3,6 +3,11 @@ const SyncObject = require("sync-object");
 const OpenFSInode = require("./OpenFSInode");
 const OpenFSUser = require("./OpenFSUser");
 
+/**
+ * @exports
+ */
+const { EVT_DESTROYED } = PhantomCore;
+
 const { INODE_TYPE_DIRECTORY, INODE_TYPE_FILE, INODE_TYPE_URL } = OpenFSInode;
 
 /**
@@ -169,3 +174,4 @@ module.exports = OpenFSCore;
 module.exports.DIR_SEPARATOR = DIR_SEPARATOR;
 module.exports.ROOT_DIR_NAME = ROOT_DIR_NAME;
 module.exports.HOME_DIR_PARENT_NAME = HOME_DIR_PARENT_NAME;
+module.exports.EVT_DESTROYED = EVT_DESTROYED;

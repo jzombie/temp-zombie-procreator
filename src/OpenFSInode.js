@@ -3,7 +3,7 @@ const PhantomCore = require("phantom-core");
 /**
  * @exports
  */
-const { EVT_UPDATED } = PhantomCore;
+const { EVT_UPDATED, EVT_DESTROYED } = PhantomCore;
 
 const OpenFSUser = require("./OpenFSUser");
 
@@ -312,3 +312,4 @@ module.exports.INODE_TYPE_DIRECTORY = INODE_TYPE_DIRECTORY;
 module.exports.INODE_TYPE_FILE = INODE_TYPE_FILE;
 module.exports.INODE_TYPE_URL = INODE_TYPE_URL;
 module.exports.EVT_UPDATED = EVT_UPDATED;
+module.exports.EVT_DESTROYED = EVT_DESTROYED;
