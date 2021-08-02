@@ -6,7 +6,8 @@ const PhantomCore = require("phantom-core");
 const { EVT_UPDATED, EVT_DESTROYED } = PhantomCore;
 
 /**
- * TODO: Document
+ * IMPORTANT: For most purposes, OpenFSCore should be utilized instead of this
+ * class, itself.
  *
  * @exports
  */

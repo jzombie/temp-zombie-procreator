@@ -32,6 +32,9 @@ const _instances = {};
  *
  * Can be exported to an object (via getStructure()) or created from an object.
  *
+ * IMPORTANT: For most purposes, OpenFSCore should be utilized instead of this
+ * class, itself.
+ *
  * @exports
  */
 class OpenFSInode extends PhantomCore {
@@ -158,14 +161,6 @@ class OpenFSInode extends PhantomCore {
   /**
    * @return {Object}
    */
-  getChildren() {
-    return this._children;
-  }
-
-  // TODO: Document
-  /**
-   * @return {Object}
-   */
   /*
   getMetaData() {
     const { __meta__: metaData } = this.getStructure();
@@ -173,6 +168,14 @@ class OpenFSInode extends PhantomCore {
     return metaData;
   }
   */
+
+  // TODO: Document
+  /**
+   * @return {Object}
+   */
+  getChildren() {
+    return this._children;
+  }
 
   /*
   getSize(isRecursive = true) {
@@ -208,6 +211,7 @@ class OpenFSInode extends PhantomCore {
 
   /*
   getPath() {
+    // TODO: Recursively iterate through parent inodes until there is none
   }
   */
 
