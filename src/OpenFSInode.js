@@ -24,6 +24,8 @@ const INODE_TYPE_FILE = "file";
  */
 const INODE_TYPE_URL = "link";
 
+const _instances = {};
+
 /**
  * Represents a path in the OpenFS filesystem, which describes a directory,
  * file, link, or other path type.
@@ -102,6 +104,19 @@ class OpenFSInode extends PhantomCore {
     this._name = fsNodeOptions.name;
 
     this._children = {};
+
+    // Register to local instances
+    _instances[this._uuid] = this;
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async destroy() {
+    // Unregister from local instances
+    delete _instances[this._uuid];
+
+    return super.destroy();
   }
 
   /**
@@ -126,6 +141,7 @@ class OpenFSInode extends PhantomCore {
       },
     };
 
+    // Additional structure for directories
     if (this._type === INODE_TYPE_DIRECTORY) {
       structure[this._name].__children__ = {};
 
@@ -138,6 +154,7 @@ class OpenFSInode extends PhantomCore {
     return structure;
   }
 
+  // TODO: Document
   /**
    * @return {Object}
    */
@@ -211,6 +228,12 @@ class OpenFSInode extends PhantomCore {
 
     OpenFSInode.validateInode(inode);
 
+    if (this.getIsSameInstance(inode)) {
+      throw new ReferenceError(
+        "Child inode cannot be same instance as parent inode"
+      );
+    }
+
     if (this.getType() !== INODE_TYPE_DIRECTORY) {
       throw new ReferenceError(
         "Child inode cannot be added to a non-directory inode"
@@ -225,6 +248,11 @@ class OpenFSInode extends PhantomCore {
       );
     }
 
+    const parentInode = this.getParentInode();
+    if (parentInode) {
+      throw new ReferenceError("child inode already has a parent");
+    }
+
     this._children[childName] = inode;
 
     this.emit(EVT_UPDATED);
@@ -236,13 +264,47 @@ class OpenFSInode extends PhantomCore {
    * @emit {EVT_UPDATED}
    * @return {void}
    */
-  removeChildNode(inode) {
+  removeChildInode(inode) {
     // TODO: Ensure we have write permissions for this node and the child node
 
     delete this._children[inode.getName()];
 
     this.emit(EVT_UPDATED);
   }
+
+  /**
+   * @param {OpenFSInode} inode
+   * @return {boolean}
+   */
+  hasChildInode(inode) {
+    return Boolean(
+      Object.values(this._children).find((instance) =>
+        instance.getIsSameInstance(inode)
+      )
+    );
+  }
+
+  // TODO: Document
+  /**
+   * @return {OpenFSInode | void}
+   */
+  getParentInode() {
+    // Find parent node across all instances
+    return Object.values(_instances).find((inode) => {
+      const children = inode.getChildren();
+
+      // Iterate through each child to determine if the same
+      for (let child of Object.values(children)) {
+        if (this.getIsSameInstance(child)) {
+          return true;
+        }
+      }
+
+      return false;
+    });
+  }
+
+  // TODO: Move inode (from parentNode, to parentNode)
 }
 
 module.exports = OpenFSInode;
