@@ -12,3 +12,8 @@ Work-in-progress; don't use
 - url -> filename conversion
 - change callbacks
 - retrieval callbacks -> content not stored in fs itself
+- core should run in all JS environments
+
+### Node.js specific ideas (incl. + Electron)
+
+- https://www.npmjs.com/package/chokidar
