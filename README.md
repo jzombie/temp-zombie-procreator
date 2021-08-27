@@ -16,4 +16,4 @@ Work-in-progress; don't use
 
 ### Node.js specific ideas (incl. + Electron)
 
-- https://www.npmjs.com/package/chokidar
+- https://www.npmjs.com/package/chokidar (Minimal and efficient cross-platform file watching library)
